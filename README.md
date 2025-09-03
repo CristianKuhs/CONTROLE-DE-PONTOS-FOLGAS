@@ -126,7 +126,6 @@
     .first-place { background: var(--gold); height: 120px; }
     .second-place { background: var(--silver); height: 90px; }
     .third-place { background: var(--bronze); height: 70px; }
-
     /* Regras / Ações */
     #rules {
       grid-area: rules;
@@ -190,7 +189,6 @@
       </div>
       <p class="note">Esta lista é apenas informativa. A pontuação é inserida manualmente ao clicar no participante.</p>
     </div>
-
     <div id="actions">
       <button class="danger" onclick="clearData()">Limpar Dados</button>
     </div>
@@ -201,7 +199,6 @@
     ];
     let scores = JSON.parse(localStorage.getItem("scores")) || {};
     users.forEach(u => { if(scores[u]===undefined) scores[u]=0 });
-
     function save() {
       localStorage.setItem("users", JSON.stringify(users));
       localStorage.setItem("scores", JSON.stringify(scores));
