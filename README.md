@@ -1,292 +1,205 @@
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Placar da Equipe</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Placar Team Building</title>
   <style>
-    :root{
-      --bg:#121212; --card:#1e1e1e; --muted:#2c2c2c; --text:#f0f0f0;
-      --gold:#FFD700; --silver:#C0C0C0; --bronze:#CD7F32;
-      --danger:#d9534f; --danger-hover:#c9302c; --success:#2e7d32;
-      --border:#333;
+    :root {
+      --bg: #121212;
+      --card: #1e1e1e;
+      --border: #333;
+      --text: #f1f1f1;
+      --accent: #4cafef;
+      --danger: #e74c3c;
+      --success: #2ecc71;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0; font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
-      background:var(--bg); color:var(--text);
-      min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
     }
-    #container{
-      width:100%; max-width:1100px; background:var(--card); border:1px solid var(--border);
-      border-radius:16px; box-shadow:0 24px 60px rgba(0,0,0,.45);
-      padding:24px;
-      display:grid; gap:20px;
-      grid-template-columns: 1fr 1fr;
-      grid-template-areas:
-        "header header"
-        "users ranking"
-        "actions actions"
-        "rules rules";
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
     }
-    h1{
-      grid-area:header; margin:0; text-align:center; font-size:2.4rem; letter-spacing:.5px; color:var(--gold);
+    .container {
+      display: grid;
+      gap: 20px;
+      max-width: 900px;
+      margin: auto;
     }
-    .card{
-      background:#202020; border:1px solid var(--border); border-radius:12px; padding:16px;
+    .card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
-    .card h2{margin:0 0 12px; font-size:1.2rem; font-weight:700; opacity:.95}
-    #users-card{grid-area:users}
-    #ranking-card{grid-area:ranking}
-    #actions{grid-area:actions; text-align:center}
-    #rules-card{grid-area:rules}
-    /* Lista de usuários */
-    ul,ol{list-style:none; margin:0; padding:0}
-    .user-item{
-      display:flex; align-items:center; gap:12px; justify-content:space-between;
-      background:var(--muted); border:1px solid var(--border); border-radius:10px; padding:10px 12px; margin:8px 0;
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 1.3em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
     }
-    .user-left{display:flex; align-items:center; gap:10px; min-width:0}
-    .user-name{
-      cursor:pointer; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    input, select, button {
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      margin-right: 5px;
     }
-    .user-points{opacity:.85; font-weight:600}
-    .btn{
-      border:none; border-radius:10px; padding:10px 14px; font-weight:700; cursor:pointer;
-      transition:.2s transform ease, .2s opacity ease, .2s background ease;
+    button {
+      cursor: pointer;
+      background: var(--accent);
+      color: #fff;
+      font-weight: bold;
+      transition: 0.2s;
     }
-    .btn:active{transform:scale(.98)}
-    .btn-success{background:var(--success); color:#fff}
-    .btn-danger{background:var(--danger); color:#fff}
-    .btn-danger:hover{background:var(--danger-hover)}
-    .icon-btn{
-      background:transparent; border:1px solid var(--border); color:#ff6b6b; padding:6px 10px; border-radius:8px; cursor:pointer;
+    button:hover {
+      opacity: 0.9;
     }
-    .icon-btn:hover{background:#3a3a3a}
-    .muted{opacity:.7}
-    /* Ranking */
-    .ranking-row{
-      display:flex; align-items:center; justify-content:space-between;
-      border:1px solid var(--border); background:#232323; border-radius:10px; padding:8px 12px; margin:8px 0;
+    .danger { background: var(--danger); }
+    .success { background: var(--success); }
+    ul { list-style: none; padding: 0; margin: 0; }
+    li { margin-bottom: 8px; }
+    .participant {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 10px;
+      background: #2a2a2a;
+      border-radius: 6px;
     }
-    .ranking-row.first{color:var(--gold); font-weight:700}
-    .ranking-row.second{color:var(--silver); font-weight:700}
-    .ranking-row.third{color:var(--bronze); font-weight:700}
-    .rank-badge{width:36px; text-align:center; font-weight:800}
-    /* Pódio */
-    #podium{
-      display:flex; align-items:flex-end; justify-content:center; gap:16px; margin-top:10px;
-    }
-    .podium-col{
-      flex:1; text-align:center; border-radius:12px 12px 0 0; padding:10px; min-width:140px;
-      display:flex; flex-direction:column; gap:6px; box-shadow:0 10px 20px rgba(0,0,0,.35);
-    }
-    .podium-col .medal{
-      display:inline-block; margin:0 auto; font-weight:800; border-radius:999px; padding:6px 12px; background:rgba(0,0,0,.18);
-    }
-    .p1{background:var(--gold); height:130px; color:#3d2f00}
-    .p2{background:var(--silver); height:100px; color:#2f2f2f}
-    .p3{background:var(--bronze); height:80px; color:#3a220f}
-    /* Regras/Ações (demonstrativo) */
+    .participant span { flex: 1; }
+    .score { font-weight: bold; margin: 0 10px; }
+    /* Ações & Valores */
     .rules-grid{
-      display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
     .rule{
-      border:1px solid var(--border); background:#232323; border-radius:10px; padding:12px;
-      display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
+      border:1px solid var(--border);
+      background:#232323;
+      border-radius:10px;
+      padding:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
     }
-    .rule .label{font-weight:600}
-    .rule .value{font-weight:800; padding:6px 10px; border-radius:8px; background:#111; border:1px solid #444}
-    .rule small{display:block; opacity:.7; margin-top:4px}
-    /* Responsivo */
-    @media (max-width: 880px){
-      #container{
-        grid-template-columns: 1fr;
-        grid-template-areas:
-          "header"
-          "users"
-          "ranking"
-          "actions"
-          "rules";
-      }
+    .rule .label{ font-weight:600; }
+    .rule .value{
+      font-weight:800;
+      padding:6px 10px;
+      border-radius:8px;
+      background:#111;
+      border:1px solid #444;
+      white-space:nowrap;
     }
   </style>
 </head>
 <body>
-  <div id="container">
-    <h1>Placar da Equipe</h1>
-    <section id="users-card" class="card">
-      <h2>Membros</h2>
-      <ul id="user-list"></ul>
-      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px">
-        <button id="btn-add" class="btn btn-success" type="button">Adicionar Participante</button>
-      </div>
-      <p class="muted" style="margin-top:8px">Clique no <strong>nome</strong> para editar a pontuação manualmente.</p>
-    </section>
-    <section id="ranking-card" class="card">
-      <h2>Ranking</h2>
-      <ol id="ranking"></ol>
-      <div id="podium" aria-label="Pódio dos 3 primeiros"></div>
-    </section>
-    <section id="actions" class="card">
-      <h2>Ações do Sistema</h2>
-      <button id="btn-clear" class="btn btn-danger" type="button">Limpar Dados</button>
-      <p class="muted" style="margin-top:6px">Zera apenas as pontuações. Exige confirmação de administrador.</p>
-    </section>
-    <section id="rules-card" class="card">
+  <h1>Placar Team Building</h1>
+  <div class="container">
+    <!-- Participantes -->
+    <div class="card">
+      <h2>Adicionar Participante</h2>
+      <input type="text" id="participantName" placeholder="Nome do participante">
+      <button onclick="addParticipant()">Adicionar</button>
+    </div>
+    <div class="card">
+      <h2>Participantes</h2>
+      <ul id="participantsList"></ul>
+    </div>
+    <!-- Fila -->
+    <div class="card">
+      <h2>Fila</h2>
+      <ul id="queueList"></ul>
+    </div>
+    <!-- Ações & Valores -->
+    <div class="card">
       <h2>Ações & Valores (Demonstrativo)</h2>
-      <div id="rules" class="rules-grid"></div>
-      <p class="muted" style="margin-top:6px">Esta lista é apenas informativa. A pontuação é inserida manualmente ao clicar no participante.</p>
-    </section>
+      <div class="rules-grid">
+        <div class="rule"><span class="label">1. Bom dia ao chegar (em cada salão)</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">2. Boa tarde ao retornar/chegar</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">3. Tchau ao ir embora (em cada salão)</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">4. Saudação no caminho</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">5. Ao deixar passar na frente</span><span class="value">+2</span></div>
+        <div class="rule"><span class="label">6. Outros gestos positivos</span><span class="value">+2</span></div>
+      </div>
+      <p style="opacity:0.7; margin-top:10px; font-size:0.9em;">Esta lista é apenas informativa. A pontuação é inserida manualmente ao clicar no participante.</p>
+    </div>
   </div>
+
   <script>
-    // ----- Configuração (demonstrativa, sem efeito automático) -----
-    const ACTIONS = [
-      { label: "Bom dia ao chegar (em cada salão)", value: 1 },
-      { label: "Boa tarde ao retornar/chegar (em cada salão)", value: 1 },
-      { label: "Tchau ao ir embora (em cada salão)", value: 1 },
-      { label: "Saudação na cozinha ao entrar (se tiver pessoas)", value: 3 },
-      { label: "Ao descer, passar no Comercial e cumprimentar", value: 5 }
-    ];
-    // ----- Estado persistente -----
-    let users = JSON.parse(localStorage.getItem("users")) || [
-      "Cristian","Eduardo","Emanuela","Kauane","Lipe","Pamela","Patrick","Pedro Henrique","Pedro Leite","Richard","Thais","Vitória"
-    ];
-    let scores = JSON.parse(localStorage.getItem("scores")) || {};
-    users.forEach(u => { if (typeof scores[u] !== "number") scores[u] = 0; });
-    // ----- Util -----
-    const $ = sel => document.querySelector(sel);
-    function save(){
-      localStorage.setItem("users", JSON.stringify(users));
-      localStorage.setItem("scores", JSON.stringify(scores));
-    }
-    // ----- Render: Usuários -----
-    function renderUsers(){
-      const list = $("#user-list");
+    const participants = [];
+    const queue = [];
+
+    function renderParticipants() {
+      const list = document.getElementById("participantsList");
       list.innerHTML = "";
-      users.forEach(user => {
+      participants.forEach((p, i) => {
         const li = document.createElement("li");
-        li.className = "user-item";
-        const left = document.createElement("div");
-        left.className = "user-left";
-        const name = document.createElement("span");
-        name.className = "user-name";
-        name.textContent = user;
-        name.title = "Clique para editar a pontuação";
-        name.addEventListener("click", () => editScore(user));
-        const points = document.createElement("span");
-        points.className = "user-points";
-        points.textContent = `${scores[user]} pts`;
-        left.appendChild(name);
-        left.appendChild(points);
-        const removeBtn = document.createElement("button");
-        removeBtn.className = "icon-btn";
-        removeBtn.setAttribute("aria-label", `Remover ${user}`);
-        removeBtn.textContent = "🗑️";
-        removeBtn.addEventListener("click", () => removeParticipant(user));
-        li.appendChild(left);
-        li.appendChild(removeBtn);
+        li.className = "participant";
+        li.innerHTML = `
+          <span>${p.name}</span>
+          <span class="score">${p.score}</span>
+          <button class="success" onclick="addToQueue(${i})">Fila</button>
+          <button onclick="addPoint(${i})">+1</button>
+          <button onclick="removePoint(${i})">-1</button>
+        `;
         list.appendChild(li);
       });
     }
-    // ----- Render: Ranking + Pódio -----
-    function renderRanking(){
-      const sorted = [...users].sort((a,b)=> (scores[b]||0) - (scores[a]||0));
-      const list = $("#ranking");
+
+    function renderQueue() {
+      const list = document.getElementById("queueList");
       list.innerHTML = "";
-      sorted.forEach((u,i)=>{
-        const row = document.createElement("li");
-        row.className = `ranking-row ${i===0?"first":i===1?"second":i===2?"third":""}`;
-        row.innerHTML = `
-          <span class="rank-badge">${i+1}º</span>
-          <span style="flex:1">${u}</span>
-          <strong>${scores[u]} pts</strong>
+      queue.forEach((q, i) => {
+        const li = document.createElement("li");
+        li.className = "participant";
+        li.innerHTML = `
+          <span>${q.name}</span>
+          <button class="danger" onclick="removeFromQueue(${i})">Remover</button>
         `;
-        list.appendChild(row);
-      });
-      renderPodium(sorted);
-    }
-    function renderPodium(sorted){
-      const podium = $("#podium");
-      podium.innerHTML = "";
-      const first = sorted[0], second = sorted[1], third = sorted[2];
-      if (second){
-        const c2 = document.createElement("div");
-        c2.className = "podium-col p2";
-        c2.innerHTML = `<span class="medal">🥈 2º</span><div><strong>${second}</strong></div><small>${scores[second]} pts</small>`;
-        podium.appendChild(c2);
-      }
-      if (first){
-        const c1 = document.createElement("div");
-        c1.className = "podium-col p1";
-        c1.innerHTML = `<span class="medal">🥇 1º</span><div><strong>${first}</strong></div><small>${scores[first]} pts</small>`;
-        podium.appendChild(c1);
-      }
-      if (third){
-        const c3 = document.createElement("div");
-        c3.className = "podium-col p3";
-        c3.innerHTML = `<span class="medal">🥉 3º</span><div><strong>${third}</strong></div><small>${scores[third]} pts</small>`;
-        podium.appendChild(c3);
-      }
-    }
-    // ----- Render: Ações (somente visual) -----
-    function renderRules(){
-      const wrap = $("#rules");
-      wrap.innerHTML = "";
-      ACTIONS.forEach((a, idx)=>{
-        const item = document.createElement("div");
-        item.className = "rule";
-        item.innerHTML = `
-          <div>
-            <div class="label">${idx+1}. ${a.label}</div>
-            <small>Exemplo de valor sugerido</small>
-          </div>
-          <div class="value">+${a.value}</div>
-        `;
-        wrap.appendChild(item);
+        list.appendChild(li);
       });
     }
-    // ----- Ações -----
-    function editScore(user){
-      const current = scores[user] ?? 0;
-      const input = prompt(`Digite a nova pontuação para ${user}:`, current);
-      if (input === null) return;
-      const parsed = parseInt(String(input).trim(), 10);
-      if (Number.isNaN(parsed)){ alert("Valor inválido."); return; }
-      scores[user] = parsed;
-      save(); renderUsers(); renderRanking();
+
+    function addParticipant() {
+      const name = document.getElementById("participantName").value.trim();
+      if(name){
+        participants.push({ name, score:0 });
+        document.getElementById("participantName").value="";
+        renderParticipants();
+      }
     }
-    function addParticipant(){
-      const name = prompt("Nome do participante:");
-      if(!name) return;
-      const clean = name.trim();
-      if(!clean){ alert("Nome vazio."); return; }
-      if(users.includes(clean)){ alert("Já existe um participante com esse nome."); return; }
-      users.push(clean);
-      scores[clean] = 0;
-      save(); renderUsers(); renderRanking();
+
+    function addToQueue(index){
+      const p = participants[index];
+      if(!queue.includes(p)){
+        queue.push(p);
+        renderQueue();
+      }
     }
-    function removeParticipant(user){
-      if (!confirm(`Remover ${user} da lista?`)) return;
-      users = users.filter(u => u !== user);
-      delete scores[user];
-      save(); renderUsers(); renderRanking();
+
+    function removeFromQueue(index){
+      queue.splice(index,1);
+      renderQueue();
     }
-    function clearData(){
-      if (!confirm("Tem certeza que deseja zerar as pontuações?")) return;
-      const pass = prompt("Confirmação do admin: digite a senha.");
-      if (pass !== "admin123"){ alert("Senha incorreta. Operação cancelada."); return; }
-      users.forEach(u => scores[u] = 0);
-      save(); renderUsers(); renderRanking();
-      alert("Pontuações zeradas com sucesso!");
+
+    function addPoint(index){
+      participants[index].score++;
+      renderParticipants();
     }
-    // ----- Listeners -----
-    $("#btn-add").addEventListener("click", addParticipant);
-    $("#btn-clear").addEventListener("click", clearData);
-    // ----- Inicialização -----
-    renderUsers();
-    renderRanking();
-    renderRules();
+
+    function removePoint(index){
+      participants[index].score--;
+      renderParticipants();
+    }
   </script>
 </body>
 </html>
