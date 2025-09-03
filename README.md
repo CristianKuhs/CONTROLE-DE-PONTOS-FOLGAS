@@ -35,6 +35,7 @@
       grid-template-areas:
         "header header"
         "users ranking"
+        "rules rules"
         "actions actions";
       gap: 20px;
     }
@@ -105,14 +106,8 @@
       cursor: pointer;
       margin: 5px;
     }
-    .danger {
-      background: crimson;
-      color: #fff;
-    }
-    .success {
-      background: seagreen;
-      color: #fff;
-    }
+    .danger { background: crimson; color: #fff; }
+    .success { background: seagreen; color: #fff; }
     /* Pódio */
     #podium {
       display: flex;
@@ -131,6 +126,42 @@
     .first-place { background: var(--gold); height: 120px; }
     .second-place { background: var(--silver); height: 90px; }
     .third-place { background: var(--bronze); height: 70px; }
+
+    /* Regras / Ações */
+    #rules {
+      grid-area: rules;
+    }
+    .rules-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .rule {
+      border: 1px solid #333;
+      background: #232323;
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .rule .label {
+      font-weight: 600;
+    }
+    .rule .value {
+      font-weight: 800;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: #111;
+      border: 1px solid #444;
+      white-space: nowrap;
+    }
+    .note {
+      margin-top: 10px;
+      font-size: 0.85em;
+      opacity: .75;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -146,6 +177,19 @@
       <ol id="ranking"></ol>
       <div id="podium"></div>
     </div>
+    <div class="card" id="rules">
+      <h2>Ações & Valores (Demonstrativo)</h2>
+      <div class="rules-grid">
+        <div class="rule"><span class="label">1. Bom dia ao chegar (cada salão)</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">2. Boa tarde ao retornar (cada salão)</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">3. Tchau ao ir embora (cada salão)</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">4. Saudação no caminho</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">5. Ao desejar passar (pedindo licença)</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">6. Bom trabalho</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">7. Boa noite ao sair (após expediente)</span><span class="value">+1</span></div>
+      </div>
+      <p class="note">Esta lista é apenas informativa. A pontuação é inserida manualmente ao clicar no participante.</p>
+    </div>
 
     <div id="actions">
       <button class="danger" onclick="clearData()">Limpar Dados</button>
@@ -157,6 +201,7 @@
     ];
     let scores = JSON.parse(localStorage.getItem("scores")) || {};
     users.forEach(u => { if(scores[u]===undefined) scores[u]=0 });
+
     function save() {
       localStorage.setItem("users", JSON.stringify(users));
       localStorage.setItem("scores", JSON.stringify(scores));
