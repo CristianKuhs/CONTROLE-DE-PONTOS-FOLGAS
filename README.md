@@ -1,19 +1,13 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Team Building Scoreboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Placar de Equipe</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     :root {
       --bg: #121212;
       --card: #1e1e1e;
-      --text: #e0e0e0;
-      --highlight: #4a90e2;
-      --border: #333;
+      --text: #f0f0f0;
       --gold: #FFD700;
       --silver: #C0C0C0;
       --bronze: #CD7F32;
@@ -25,260 +19,221 @@
       color: var(--text);
       display: flex;
       justify-content: center;
-      padding: 20px;
+      align-items: center;
       min-height: 100vh;
+      padding: 20px;
     }
-    #dashboard {
+    #container {
       background: var(--card);
-      padding: 30px;
-      border-radius: 12px;
+      padding: 25px;
+      border-radius: 14px;
       width: 100%;
       max-width: 950px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.5);
       display: grid;
-      gap: 25px;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "header header"
+        "users ranking"
+        "actions actions";
+      gap: 20px;
     }
     h1 {
+      grid-area: header;
       text-align: center;
-      font-size: 2.4rem;
-      color: var(--highlight);
+      margin: 0 0 20px;
+      font-size: 2.2rem;
+      color: var(--gold);
     }
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
+      background: #222;
+      padding: 15px;
       border-radius: 10px;
-      padding: 20px;
     }
-    h2 {
-      font-size: 1.4rem;
-      margin-top: 0;
-      margin-bottom: 15px;
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    ul, ol {
+    ul {
       list-style: none;
       padding: 0;
       margin: 0;
     }
-    /* Lista de usuários */
-    #users-list li, #queue-list li {
-      background: #2b2b2b;
-      padding: 10px 15px;
+    li {
+      background: #2c2c2c;
+      padding: 12px;
+      margin: 6px 0;
       border-radius: 8px;
-      margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border: 1px solid var(--border);
+      transition: 0.2s;
     }
-    #users-list button, #queue-list button {
-      background: #d9534f;
-      border: none;
-      color: white;
-      border-radius: 5px;
-      padding: 6px 10px;
+    li span.name {
       cursor: pointer;
+      flex: 1;
     }
-    #users-list button:hover, #queue-list button:hover {
-      background: #b52b27;
+    li:hover {
+      background: #444;
     }
-    /* Ranking */
+    .remove-btn {
+      background: transparent;
+      border: none;
+      color: crimson;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    .remove-btn:hover {
+      color: #ff4d4d;
+    }
     .ranking-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 8px;
+      border-radius: 6px;
     }
-    .ranking-item span {
-      flex-grow: 1;
-      margin-left: 10px;
+    .first { color: var(--gold); font-weight: 700; }
+    .second { color: var(--silver); font-weight: 700; }
+    .third { color: var(--bronze); font-weight: 700; }
+    #actions {
+      grid-area: actions;
+      text-align: center;
     }
-    .first-place { color: var(--gold); }
-    .second-place { color: var(--silver); }
-    .third-place { color: var(--bronze); }
-    /* Regras/Ações (demonstrativo) */
-    .rules-grid{
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .rule{
-      border:1px solid var(--border);
-      background:#232323;
-      border-radius:10px;
-      padding:12px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-    }
-    .rule .label{ font-weight:600; }
-    .rule .value{
-      font-weight:800;
-      padding:6px 10px;
-      border-radius:8px;
-      background:#111;
-      border:1px solid #444;
-      white-space:nowrap;
-    }
-    .rules-footer{
-      margin-top:12px;
-      font-size:.85em;
-      opacity:.7;
-    }
-    /* Botão limpar */
-    #clear-btn {
-      background: #d9534f;
-      color: white;
-      padding: 12px 24px;
+    button {
+      padding: 10px 18px;
       border: none;
       border-radius: 8px;
+      font-weight: 600;
       cursor: pointer;
+      margin: 5px;
+    }
+    .danger {
+      background: crimson;
+      color: #fff;
+    }
+    .success {
+      background: seagreen;
+      color: #fff;
+    }
+    /* Pódio */
+    #podium {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .podium-place {
+      flex: 1;
+      text-align: center;
+      border-radius: 10px 10px 0 0;
+      padding: 10px;
       font-weight: bold;
-      display: block;
-      margin: 0 auto;
     }
-    #clear-btn:hover {
-      background: #b52b27;
-    }
+    .first-place { background: var(--gold); height: 120px; }
+    .second-place { background: var(--silver); height: 90px; }
+    .third-place { background: var(--bronze); height: 70px; }
   </style>
 </head>
 <body>
-  <div id="dashboard">
-    <h1>Team Building Scoreboard</h1>
-    <!-- Usuários -->
-    <div class="card">
-      <h2><i class="fas fa-users"></i> Participantes</h2>
-      <ul id="users-list"></ul>
-      <button onclick="addParticipant()">+ Adicionar Participante</button>
+  <div id="container">
+    <h1>Placar da Equipe</h1>
+    <div class="card" style="grid-area:users;">
+      <h2>Membros</h2>
+      <ul id="user-list"></ul>
+      <button class="success" onclick="addParticipant()">Adicionar Participante</button>
     </div>
-    <!-- Fila -->
-    <div class="card">
-      <h2><i class="fas fa-list-ol"></i> Fila</h2>
-      <ul id="queue-list"></ul>
+    <div class="card" style="grid-area:ranking;">
+      <h2>Ranking</h2>
+      <ol id="ranking"></ol>
+      <div id="podium"></div>
     </div>
-    <!-- Ranking -->
-    <div class="card">
-      <h2><i class="fas fa-trophy"></i> Ranking</h2>
-      <ol id="ranking-list"></ol>
+
+    <div id="actions">
+      <button class="danger" onclick="clearData()">Limpar Dados</button>
     </div>
-    <!-- Ações e valores -->
-    <div class="card">
-      <h2><i class="fas fa-star"></i> Ações & Valores (Demonstrativo)</h2>
-      <div class="rules-grid" id="rules-list"></div>
-      <div class="rules-footer">
-        Esta lista é apenas informativa. A pontuação é inserida manualmente ao clicar no participante.
-      </div>
-    </div>
-    <!-- Botão limpar -->
-    <button id="clear-btn">LIMPAR DADOS</button>
   </div>
   <script>
-    let users = ["Cristian", "Eduardo", "Emanuela", "Kauane"];
-    let scores = JSON.parse(localStorage.getItem("scores")) || {};
-    let queue = [];
-    users.forEach(u => { if(!(u in scores)) scores[u]=0 });
-    const rules = [
-      { label:"Bom dia ao chegar (em cada salão)", value:1 },
-      { label:"Boa tarde ao retornar/chegar (em cada salão)", value:1 },
-      { label:"Tchau ao ir embora (em cada salão)", value:1 },
-      { label:"Saudação na cozinha sempre que entrar", value:3 },
-      { label:"Passar no Comercial e dar Bom dia/Boa tarde", value:5 }
+    let users = JSON.parse(localStorage.getItem("users")) || [
+      "Cristian","Eduardo","Emanuela","Kauane","Lipe","Pamela"
     ];
-    const usersList = document.getElementById("users-list");
-    const queueList = document.getElementById("queue-list");
-    const rankingList = document.getElementById("ranking-list");
-    const rulesList = document.getElementById("rules-list");
-
-    function renderUsers(){
-      usersList.innerHTML="";
-      users.forEach(user=>{
-        const li=document.createElement("li");
-        li.innerHTML=`<span>${user} - ${scores[user]||0} pts</span>`;
-        const btn=document.createElement("button");
-        btn.textContent="Fila";
-        btn.onclick=(e)=>{ e.stopPropagation(); addToQueue(user); };
-        li.appendChild(btn);
-        li.onclick=()=>manualAdd(user);
-        usersList.appendChild(li);
-      });
-      localStorage.setItem("scores",JSON.stringify(scores));
+    let scores = JSON.parse(localStorage.getItem("scores")) || {};
+    users.forEach(u => { if(scores[u]===undefined) scores[u]=0 });
+    function save() {
+      localStorage.setItem("users", JSON.stringify(users));
+      localStorage.setItem("scores", JSON.stringify(scores));
     }
-    function renderQueue(){
-      queueList.innerHTML="";
-      queue.forEach(user=>{
-        const li=document.createElement("li");
-        li.innerHTML=`<span>${user}</span>`;
-        const btn=document.createElement("button");
-        btn.textContent="Remover";
-        btn.onclick=()=>removeFromQueue(user);
-        li.appendChild(btn);
-        queueList.appendChild(li);
+    function renderUsers() {
+      const ul = document.getElementById("user-list");
+      ul.innerHTML = "";
+      users.forEach(user => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <span class="name" onclick="editScore('${user}')">${user} - ${scores[user]} pts</span>
+          <button class="remove-btn" onclick="removeParticipant('${user}')">🗑️</button>
+        `;
+        ul.appendChild(li);
       });
     }
-    function renderRanking(){
-      rankingList.innerHTML="";
-      const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
-      sorted.forEach(([u,p],i)=>{
-        const li=document.createElement("li");
-        let cls="";
-        if(i===0) cls="first-place"; else if(i===1) cls="second-place"; else if(i===2) cls="third-place";
-        li.innerHTML=`<div class="ranking-item ${cls}"><span>${i+1}º - ${u}</span><span>${p} pts</span></div>`;
-        rankingList.appendChild(li);
+    function renderRanking() {
+      const sorted = [...users].sort((a,b)=>scores[b]-scores[a]);
+      const ol = document.getElementById("ranking");
+      ol.innerHTML = "";
+      sorted.forEach((u,i)=>{
+        const li = document.createElement("li");
+        li.className = i===0?"first":i===1?"second":i===2?"third":"";
+        li.innerHTML = `<div class="ranking-item"><span>${i+1}º</span><span>${u}</span><span>${scores[u]} pts</span></div>`;
+        ol.appendChild(li);
       });
+      renderPodium(sorted);
     }
-
-    function renderRules(){
-      rulesList.innerHTML="";
-      rules.forEach((r,i)=>{
-        const div=document.createElement("div");
-        div.className="rule";
-        div.innerHTML=`<span class="label">${i+1}. ${r.label}</span><span class="value">+${r.value}</span>`;
-        rulesList.appendChild(div);
-      });
+    function renderPodium(sorted){
+      const podium = document.getElementById("podium");
+      podium.innerHTML = "";
+      if(sorted[1]) podium.innerHTML += `<div class="podium-place second-place">${sorted[1]}<br>${scores[sorted[1]]} pts</div>`;
+      if(sorted[0]) podium.innerHTML += `<div class="podium-place first-place">${sorted[0]}<br>${scores[sorted[0]]} pts</div>`;
+      if(sorted[2]) podium.innerHTML += `<div class="podium-place third-place">${sorted[2]}<br>${scores[sorted[2]]} pts</div>`;
     }
-    function manualAdd(user){
-      let val=prompt(`Digite a pontuação a adicionar para ${user}:`);
-      if(val && !isNaN(val)){
-        scores[user]+=parseInt(val);
-        renderUsers();renderRanking();
+    function editScore(user){
+      const newScore = prompt(`Digite a nova pontuação para ${user}:`, scores[user]);
+      if(newScore!==null && !isNaN(newScore)){
+        scores[user] = parseInt(newScore);
+        save();
+        renderUsers();
+        renderRanking();
       }
     }
     function addParticipant(){
-      let name=prompt("Nome do novo participante:");
-      if(name){
+      const name = prompt("Nome do participante:");
+      if(name && !users.includes(name)){
         users.push(name);
         scores[name]=0;
-        renderUsers();renderRanking();
+        save();
+        renderUsers();
+        renderRanking();
       }
     }
     function removeParticipant(user){
-      if(confirm(`Remover ${user}?`)){
-        users=users.filter(u=>u!==user);
+      if(confirm(`Deseja remover ${user} da lista?`)){
+        users = users.filter(u => u !== user);
         delete scores[user];
-        renderUsers();renderRanking();
+        save();
+        renderUsers();
+        renderRanking();
       }
     }
-    function addToQueue(user){
-      if(!queue.includes(user)){
-        queue.push(user);
-        renderQueue();
-      }
-    }
-    function removeFromQueue(user){
-      queue=queue.filter(u=>u!==user);
-      renderQueue();
-    }
-    document.getElementById("clear-btn").onclick=()=>{
-      if(confirm("Limpar todos os dados?")){
+    function clearData(){
+      const pass = prompt("Digite a senha do administrador para limpar:");
+      if(pass==="admin123"){ // senha simples para demo
         users.forEach(u=>scores[u]=0);
-        queue=[];
-        renderUsers();renderRanking();renderQueue();
+        save();
+        renderUsers();
+        renderRanking();
+        alert("Dados zerados com sucesso!");
+      } else {
+        alert("Senha incorreta. Operação cancelada.");
       }
     }
-    renderUsers();renderRanking();renderRules();renderQueue();
+    renderUsers();
+    renderRanking();
   </script>
 </body>
 </html>
