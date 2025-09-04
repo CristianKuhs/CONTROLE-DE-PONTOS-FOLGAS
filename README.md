@@ -1,23 +1,16 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Placar de Equipe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de Pontos e Folgas</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #101418;
-      --card: #1c2127;
-      --text: #e6e6e6;
-      --gold: #FFD700;
-      --silver: #C0C0C0;
-      --bronze: #CD7F32;
-      --accent: #2d89ef;
-    }
+    /* ESTILO GERAL */
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
-      background: var(--bg);
-      color: var(--text);
+      background: #101418;
+      color: #e6e6e6;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -25,7 +18,7 @@
     }
     #container {
       width: 100%;
-      max-width: 1400px;
+      max-width: 1600px;
       display: flex;
       flex-direction: column;
       gap: 25px;
@@ -33,29 +26,36 @@
     h1 {
       text-align: center;
       font-size: 2.2rem;
-      color: var(--accent);
+      color: #2d89ef;
       margin: 0;
     }
+    /* GRID PRINCIPAL */
     .columns {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(3, minmax(300px, 1fr));
+      gap: 25px;
+      width: 100%;
     }
     .card {
-      background: var(--card);
+      background: #1c2127;
       padding: 20px;
       border-radius: 12px;
       display: flex;
       flex-direction: column;
-      min-height: 420px; /* mesma altura para todos */
     }
     h2 {
       margin: 0 0 15px;
-      font-size: 1.2rem;
-      border-bottom: 2px solid rgba(255,255,255,0.15);
+      font-size: 1.3rem;
+      border-bottom: 2px solid rgba(255,255,255,0.1);
       padding-bottom: 6px;
+      color: #fff;
     }
-    ul, ol { list-style: none; padding: 0; margin: 0; }
+    /* LISTAS */
+    ul, ol {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
     li {
       background: #2a3038;
       padding: 10px 12px;
@@ -64,25 +64,28 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: 0.2s;
+      font-size: 0.95rem;
     }
-    li:hover { background: #353c46; }
-    li span.name { cursor: pointer; flex: 1; }
-    .remove-btn {
-      background: transparent;
-      border: none;
-      color: crimson;
-      font-size: 0.9rem;
+    li span.name {
       cursor: pointer;
+      flex: 1;
     }
     .ranking-item {
       display: flex;
       justify-content: space-between;
       width: 100%;
     }
-    .first { color: var(--gold); font-weight: bold; }
-    .second { color: var(--silver); font-weight: bold; }
-    .third { color: var(--bronze); font-weight: bold; }
+    .first { color: gold; font-weight: bold; }
+    .second { color: silver; font-weight: bold; }
+    .third { color: #CD7F32; font-weight: bold; }
+    .remove-btn {
+      background: transparent;
+      border: none;
+      color: crimson;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    /* BOTÕES */
     #actions {
       text-align: center;
       margin-top: 10px;
@@ -94,166 +97,113 @@
       font-weight: 600;
       cursor: pointer;
       margin: 5px;
-      font-size: 0.95rem;
-      transition: 0.3s;
     }
     .danger { background: crimson; color: #fff; }
-    .success { background: var(--accent); color: #fff; }
+    .success { background: #2d89ef; color: #fff; }
     button:hover { opacity: 0.85; }
-    /* Podium */
-    #podium {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      gap: 15px;
-      margin-top: 15px;
-    }
-    .podium-place {
-      flex: 1;
-      text-align: center;
-      border-radius: 8px 8px 0 0;
-      padding: 8px;
-      font-weight: bold;
-      color: #000;
-    }
-    .first-place { background: var(--gold); height: 120px; }
-    .second-place { background: var(--silver); height: 90px; }
-    .third-place { background: var(--bronze); height: 70px; }
-    /* Regras */
-    .rules-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .rule {
-      background: #2a3038;
-      border-radius: 8px;
-      padding: 8px 10px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9rem;
-    }
-    .rule .value {
-      font-weight: bold;
-      background: #111;
-      padding: 2px 8px;
-      border-radius: 6px;
-    }
-    .note {
-      margin-top: auto;
-      font-size: 0.8em;
-      opacity: .7;
-      text-align: center;
-    }
+    /* RESPONSIVIDADE */
     @media(max-width: 1000px){
-      .columns { grid-template-columns: 1fr; }
-      .card { min-height: auto; }
+      .columns {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <div id="container">
-    <h1>Placar da Equipe</h1>
+    <h1>Controle de Pontos & Folgas</h1>
     <div class="columns">
-      <!-- Coluna 1 -->
+      <!-- COLUNA 1: AÇÕES & VALORES -->
       <div class="card">
         <h2>Ações & Valores</h2>
-        <div class="rules-grid">
-        <div class="rule"><span class="label">1. Bom dia/tarde ao chegar (cada salão)</span><span class="value">+1</span></div>
-        <div class="rule"><span class="label">2. Bom dia/tarde ao retornar (cada salão)</span><span class="value">+1</span></div>
-        <div class="rule"><span class="label">3. Tchau ao ir embora (cada salão)</span><span class="value">+1</span></div>
-        <div class="rule"><span class="label">4. Bom dia/tarde na cozinha</span><span class="value">+3</span></div>
-        <div class="rule"><span class="label">5. Bom dia/tarde ao passar no Comercial</span><span class="value">+5</span></div>
-        </div>
-        <p class="note">Clique no nome do participante para adicionar pontos.</p>
+        <ul id="actionsList">
+          <li><span class="name">1. Bom dia/tarde à equipe</span> <button onclick="addPointsToAll(1)">+1</button></li>
+          <li><span class="name">2. Entregar tarefa no prazo</span> <button onclick="addPointsToAll(2)">+2</button></li>
+          <li><span class="name">3. Ajudar colega</span> <button onclick="addPointsToAll(3)">+3</button></li>
+          <li><span class="name">4. Resolver problema crítico</span> <button onclick="addPointsToAll(5)">+5</button></li>
+        </ul>
       </div>
-      <!-- Coluna 2 -->
+      <!-- COLUNA 2: RANKING -->
       <div class="card">
         <h2>Ranking</h2>
-        <ol id="ranking"></ol>
-        <div id="podium"></div>
+        <ol id="rankingList"></ol>
       </div>
-      <!-- Coluna 3 -->
+      <!-- COLUNA 3: MEMBROS -->
       <div class="card">
         <h2>Membros</h2>
-        <ul id="user-list"></ul>
-        <button class="success" onclick="addParticipant()">Adicionar Participante</button>
+        <ul id="playersList"></ul>
+        <div id="actions">
+          <button class="success" onclick="addPlayer()">+ Adicionar Membro</button>
+          <button class="danger" onclick="resetGame()">Resetar Pontos</button>
+        </div>
       </div>
-    </div>
-    <div id="actions">
-      <button class="danger" onclick="clearData()">Limpar Dados</button>
     </div>
   </div>
   <script>
-    let users = JSON.parse(localStorage.getItem("users")) || ["Cristian","Eduardo","Emanuela","Kauane","Lipe","Pamela"];
-    let scores = JSON.parse(localStorage.getItem("scores")) || {};
-    users.forEach(u => { if(scores[u]===undefined) scores[u]=0 });
-    function save() {
-      localStorage.setItem("users", JSON.stringify(users));
-      localStorage.setItem("scores", JSON.stringify(scores));
-    }
-    function renderUsers() {
-      const ul = document.getElementById("user-list");
-      ul.innerHTML = "";
-      users.forEach(user => {
+    let players = [
+      {name: "Cristian", points: 0},
+      {name: "Eduardo", points: 0},
+      {name: "Emanuela", points: 0},
+      {name: "Pamela", points: 0},
+      {name: "Patrick", points: 0},
+      {name: "Pedro Henrique", points: 0},
+      {name: "Pedro Leite", points: 0},
+      {name: "Richard", points: 0},
+      {name: "Thais", points: 0}
+    ];
+    function renderPlayers(){
+      const playersList = document.getElementById("playersList");
+      playersList.innerHTML = "";
+      players.forEach((p,i) => {
         const li = document.createElement("li");
-        li.innerHTML = `
-          <span class="name" onclick="editScore('${user}')">${user} - ${scores[user]} pts</span>
-          <button class="remove-btn" onclick="removeParticipant('${user}')">🗑️</button>
-        `;
-        ul.appendChild(li);
+        li.innerHTML = `<span class="name" onclick="addPoints(${i},1)">${p.name} (${p.points} pts)</span>
+                        <button class="remove-btn" onclick="removePlayer(${i})">✖</button>`;
+        playersList.appendChild(li);
+      });
+      renderRanking();
+    }
+    function renderRanking(){
+      const rankingList = document.getElementById("rankingList");
+      rankingList.innerHTML = "";
+      players.sort((a,b)=>b.points-a.points)
+             .forEach((p,i)=>{
+        const li = document.createElement("li");
+        li.classList.add("ranking-item");
+        if(i===0) li.classList.add("first");
+        else if(i===1) li.classList.add("second");
+        else if(i===2) li.classList.add("third");
+        li.textContent = `${i+1}º ${p.name} - ${p.points} pts`;
+        rankingList.appendChild(li);
       });
     }
-    function renderRanking() {
-      const sorted = [...users].sort((a,b)=>scores[b]-scores[a]);
-      const ol = document.getElementById("ranking");
-      ol.innerHTML = "";
-      sorted.forEach((u,i)=>{
-        const li = document.createElement("li");
-        li.className = i===0?"first":i===1?"second":i===2?"third":"";
-        li.innerHTML = `<div class="ranking-item"><span>${i+1}º</span><span>${u}</span><span>${scores[u]} pts</span></div>`;
-        ol.appendChild(li);
-      });
-      renderPodium(sorted);
+    function addPoints(i, pts){
+      players[i].points += pts;
+      renderPlayers();
     }
-    function renderPodium(sorted){
-      const podium = document.getElementById("podium");
-      podium.innerHTML = "";
-      if(sorted[1]) podium.innerHTML += `<div class="podium-place second-place">${sorted[1]}<br>${scores[sorted[1]]} pts</div>`;
-      if(sorted[0]) podium.innerHTML += `<div class="podium-place first-place">${sorted[0]}<br>${scores[sorted[0]]} pts</div>`;
-      if(sorted[2]) podium.innerHTML += `<div class="podium-place third-place">${sorted[2]}<br>${scores[sorted[2]]} pts</div>`;
+    function addPointsToAll(pts){
+      players.forEach(p => p.points += pts);
+      renderPlayers();
     }
-    function editScore(user){
-      const addPoints = prompt(`Quantos pontos deseja adicionar a ${user}? (atual: ${scores[user]} pts)`, "0");
-      if(addPoints!==null && !isNaN(addPoints)){
-        scores[user] += parseInt(addPoints);
-        save(); renderUsers(); renderRanking();
+    function addPlayer(){
+      const name = prompt("Digite o nome do novo membro:");
+      if(name){
+        players.push({name, points:0});
+        renderPlayers();
       }
     }
-    function addParticipant(){
-      const name = prompt("Nome do participante:");
-      if(name && !users.includes(name)){
-        users.push(name); scores[name]=0;
-        save(); renderUsers(); renderRanking();
+    function removePlayer(i){
+      if(confirm("Remover este membro?")){
+        players.splice(i,1);
+        renderPlayers();
       }
     }
-    function removeParticipant(user){
-      if(confirm(`Remover ${user}?`)){
-        users = users.filter(u => u !== user);
-        delete scores[user];
-        save(); renderUsers(); renderRanking();
+    function resetGame(){
+      if(confirm("Tem certeza que deseja zerar todos os pontos?")){
+        players.forEach(p=>p.points=0);
+        renderPlayers();
       }
     }
-    function clearData(){
-      const pass = prompt("Senha do admin para limpar:");
-      if(pass==="admin123"){ 
-        users.forEach(u=>scores[u]=0);
-        save(); renderUsers(); renderRanking();
-        alert("Dados zerados!");
-      } else { alert("Senha incorreta."); }
-    }
-    renderUsers();
-    renderRanking();
+    renderPlayers();
   </script>
 </body>
 </html>
