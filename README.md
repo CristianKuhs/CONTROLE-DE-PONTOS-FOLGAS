@@ -159,13 +159,11 @@
       <div class="card">
         <h2>Ações & Valores</h2>
         <div class="rules-grid">
-          <div class="rule"><span>1. Bom dia ao chegar</span><span class="value">+1</span></div>
-          <div class="rule"><span>2. Boa tarde ao retornar</span><span class="value">+1</span></div>
-          <div class="rule"><span>3. Tchau ao ir embora</span><span class="value">+1</span></div>
-          <div class="rule"><span>4. Saudação no caminho</span><span class="value">+1</span></div>
-          <div class="rule"><span>5. Ao pedir licença</span><span class="value">+1</span></div>
-          <div class="rule"><span>6. Bom trabalho</span><span class="value">+1</span></div>
-          <div class="rule"><span>7. Boa noite ao sair</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">1. Bom dia/tarde ao chegar (cada salão)</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">2. Bom dia/tarde ao retornar (cada salão)</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">3. Tchau ao ir embora (cada salão)</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">4. Bom dia/tarde na cozinha</span><span class="value">+3</span></div>
+        <div class="rule"><span class="label">5. Bom dia/tarde ao passar no Comercial</span><span class="value">+5</span></div>
         </div>
         <p class="note">Clique no nome do participante para adicionar pontos.</p>
       </div>
