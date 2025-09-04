@@ -18,86 +18,75 @@
       margin: 0;
       background: var(--bg);
       color: var(--text);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      padding: 30px 20px;
+      padding: 20px;
     }
     #container {
-      background: var(--card);
-      padding: 30px;
-      border-radius: 16px;
       width: 100%;
       max-width: 1400px;
-      box-shadow: 0 10px 25px rgba(0,0,0,.6);
       display: flex;
       flex-direction: column;
-      gap: 30px;
+      gap: 25px;
     }
     h1 {
       text-align: center;
-      margin: 0;
-      font-size: 2.4rem;
+      font-size: 2.2rem;
       color: var(--accent);
-      font-weight: 700;
+      margin: 0;
     }
     .columns {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 20px;
     }
     .card {
-      background: #232a32;
+      background: var(--card);
       padding: 20px;
       border-radius: 12px;
       display: flex;
       flex-direction: column;
+      min-height: 420px; /* mesma altura para todos */
     }
     h2 {
-      margin-bottom: 15px;
-      font-size: 1.3rem;
-      border-bottom: 2px solid rgba(255,255,255,0.1);
-      padding-bottom: 5px;
+      margin: 0 0 15px;
+      font-size: 1.2rem;
+      border-bottom: 2px solid rgba(255,255,255,0.15);
+      padding-bottom: 6px;
     }
-    ul, ol {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+    ul, ol { list-style: none; padding: 0; margin: 0; }
     li {
-      background: #2e363f;
-      padding: 12px;
-      margin: 8px 0;
+      background: #2a3038;
+      padding: 10px 12px;
+      margin: 6px 0;
       border-radius: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       transition: 0.2s;
     }
-    li:hover { background: #3a4450; }
+    li:hover { background: #353c46; }
     li span.name { cursor: pointer; flex: 1; }
     .remove-btn {
       background: transparent;
       border: none;
       color: crimson;
-      font-size: 1rem;
+      font-size: 0.9rem;
       cursor: pointer;
-      margin-left: 10px;
-      transition: 0.2s;
     }
-    .remove-btn:hover { color: #ff4d4d; }
     .ranking-item {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 6px 10px;
-      border-radius: 6px;
+      width: 100%;
     }
-    .first { color: var(--gold); font-weight: 700; }
-    .second { color: var(--silver); font-weight: 700; }
-    .third { color: var(--bronze); font-weight: 700; }
-    #actions { text-align: center; }
+    .first { color: var(--gold); font-weight: bold; }
+    .second { color: var(--silver); font-weight: bold; }
+    .third { color: var(--bronze); font-weight: bold; }
+    #actions {
+      text-align: center;
+      margin-top: 10px;
+    }
     button {
       padding: 10px 18px;
       border: none;
@@ -111,59 +100,54 @@
     .danger { background: crimson; color: #fff; }
     .success { background: var(--accent); color: #fff; }
     button:hover { opacity: 0.85; }
-    /* Pódio */
+    /* Podium */
     #podium {
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      gap: 20px;
-      margin-top: 20px;
+      gap: 15px;
+      margin-top: 15px;
     }
     .podium-place {
       flex: 1;
       text-align: center;
-      border-radius: 10px 10px 0 0;
-      padding: 12px;
+      border-radius: 8px 8px 0 0;
+      padding: 8px;
       font-weight: bold;
       color: #000;
     }
-    .first-place { background: var(--gold); height: 130px; }
-    .second-place { background: var(--silver); height: 100px; }
-    .third-place { background: var(--bronze); height: 80px; }
+    .first-place { background: var(--gold); height: 120px; }
+    .second-place { background: var(--silver); height: 90px; }
+    .third-place { background: var(--bronze); height: 70px; }
     /* Regras */
     .rules-grid {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
     .rule {
-      border: 1px solid #333;
-      background: #2b323b;
-      border-radius: 10px;
-      padding: 10px 14px;
+      background: #2a3038;
+      border-radius: 8px;
+      padding: 8px 10px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      font-size: 0.9rem;
     }
-    .rule .label { font-weight: 600; }
     .rule .value {
-      font-weight: 800;
-      padding: 6px 10px;
-      border-radius: 8px;
+      font-weight: bold;
       background: #111;
-      border: 1px solid #444;
-      white-space: nowrap;
+      padding: 2px 8px;
+      border-radius: 6px;
     }
     .note {
-      margin-top: 10px;
-      font-size: 0.85em;
-      opacity: .75;
+      margin-top: auto;
+      font-size: 0.8em;
+      opacity: .7;
       text-align: center;
     }
-    @media(max-width: 900px){
-      .columns {
-        grid-template-columns: 1fr;
-      }
+    @media(max-width: 1000px){
+      .columns { grid-template-columns: 1fr; }
+      .card { min-height: auto; }
     }
   </style>
 </head>
@@ -175,13 +159,15 @@
       <div class="card">
         <h2>Ações & Valores</h2>
         <div class="rules-grid">
-        <div class="rule"><span class="label">1. Bom dia/tarde ao chegar (cada salão)</span><span class="value">+1</span></div>
-        <div class="rule"><span class="label">2. Bom dia/tarde ao retornar (cada salão)</span><span class="value">+1</span></div>
-        <div class="rule"><span class="label">3. Tchau ao ir embora (cada salão)</span><span class="value">+1</span></div>
-        <div class="rule"><span class="label">4. Bom dia/tarde na cozinha</span><span class="value">+3</span></div>
-        <div class="rule"><span class="label">5. Bom dia/tarde ao passar no Comercial</span><span class="value">+5</span></div>
+          <div class="rule"><span>1. Bom dia ao chegar</span><span class="value">+1</span></div>
+          <div class="rule"><span>2. Boa tarde ao retornar</span><span class="value">+1</span></div>
+          <div class="rule"><span>3. Tchau ao ir embora</span><span class="value">+1</span></div>
+          <div class="rule"><span>4. Saudação no caminho</span><span class="value">+1</span></div>
+          <div class="rule"><span>5. Ao pedir licença</span><span class="value">+1</span></div>
+          <div class="rule"><span>6. Bom trabalho</span><span class="value">+1</span></div>
+          <div class="rule"><span>7. Boa noite ao sair</span><span class="value">+1</span></div>
         </div>
-        <p class="note">Clique no nome do participante para adicionar pontos acumulativos.</p>
+        <p class="note">Clique no nome do participante para adicionar pontos.</p>
       </div>
       <!-- Coluna 2 -->
       <div class="card">
@@ -201,9 +187,7 @@
     </div>
   </div>
   <script>
-    let users = JSON.parse(localStorage.getItem("users")) || [
-      "Cristian","Eduardo","Emanuela","Kauane","Lipe","Pamela"
-    ];
+    let users = JSON.parse(localStorage.getItem("users")) || ["Cristian","Eduardo","Emanuela","Kauane","Lipe","Pamela"];
     let scores = JSON.parse(localStorage.getItem("scores")) || {};
     users.forEach(u => { if(scores[u]===undefined) scores[u]=0 });
     function save() {
@@ -245,41 +229,30 @@
       const addPoints = prompt(`Quantos pontos deseja adicionar a ${user}? (atual: ${scores[user]} pts)`, "0");
       if(addPoints!==null && !isNaN(addPoints)){
         scores[user] += parseInt(addPoints);
-        save();
-        renderUsers();
-        renderRanking();
+        save(); renderUsers(); renderRanking();
       }
     }
     function addParticipant(){
       const name = prompt("Nome do participante:");
       if(name && !users.includes(name)){
-        users.push(name);
-        scores[name]=0;
-        save();
-        renderUsers();
-        renderRanking();
+        users.push(name); scores[name]=0;
+        save(); renderUsers(); renderRanking();
       }
     }
     function removeParticipant(user){
-      if(confirm(`Deseja remover ${user} da lista?`)){
+      if(confirm(`Remover ${user}?`)){
         users = users.filter(u => u !== user);
         delete scores[user];
-        save();
-        renderUsers();
-        renderRanking();
+        save(); renderUsers(); renderRanking();
       }
     }
     function clearData(){
-      const pass = prompt("Digite a senha do administrador para limpar:");
+      const pass = prompt("Senha do admin para limpar:");
       if(pass==="admin123"){ 
         users.forEach(u=>scores[u]=0);
-        save();
-        renderUsers();
-        renderRanking();
-        alert("Dados zerados com sucesso!");
-      } else {
-        alert("Senha incorreta. Operação cancelada.");
-      }
+        save(); renderUsers(); renderRanking();
+        alert("Dados zerados!");
+      } else { alert("Senha incorreta."); }
     }
     renderUsers();
     renderRanking();
