@@ -117,10 +117,11 @@
       <div class="card">
         <h2>Ações & Valores</h2>
         <ul id="actionsList">
-          <li><span class="name">1. Bom dia/tarde à equipe</span> <button onclick="addPointsToAll(1)">+1</button></li>
-          <li><span class="name">2. Entregar tarefa no prazo</span> <button onclick="addPointsToAll(2)">+2</button></li>
-          <li><span class="name">3. Ajudar colega</span> <button onclick="addPointsToAll(3)">+3</button></li>
-          <li><span class="name">4. Resolver problema crítico</span> <button onclick="addPointsToAll(5)">+5</button></li>
+          <li><span class="name">1. Bom dia/tarde ao chegar (cada salão)</span> <button onclick="addPointsToAll(1)">+1</button></li>
+          <li><span class="name">2. Bom dia/tarde ao retornar (cada salão)</span> <button onclick="addPointsToAll(1)">+1</button></li>
+          <li><span class="name">3. Tchau ao ir embora (cada salão)</span> <button onclick="addPointsToAll(1)">+1</button></li>
+          <li><span class="name">4. Bom dia/tarde na cozinha</span> <button onclick="addPointsToAll(3)">+3</button></li>
+          <li><span class="name">5. Bom dia/tarde ao passar no Comercial</span> <button onclick="addPointsToAll(5)">+5</button></li>
         </ul>
       </div>
       <!-- COLUNA 2: RANKING -->
