@@ -29,29 +29,36 @@
       padding: 30px;
       border-radius: 16px;
       width: 100%;
-      max-width: 800px;
+      max-width: 1400px;
       box-shadow: 0 10px 25px rgba(0,0,0,.6);
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 30px;
     }
     h1 {
       text-align: center;
-      margin: 0 0 10px;
+      margin: 0;
       font-size: 2.4rem;
       color: var(--accent);
       font-weight: 700;
+    }
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+    .card {
+      background: #232a32;
+      padding: 20px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
     }
     h2 {
       margin-bottom: 15px;
       font-size: 1.3rem;
       border-bottom: 2px solid rgba(255,255,255,0.1);
       padding-bottom: 5px;
-    }
-    .card {
-      background: #232a32;
-      padding: 20px;
-      border-radius: 12px;
     }
     ul, ol {
       list-style: none;
@@ -68,13 +75,8 @@
       align-items: center;
       transition: 0.2s;
     }
-    li:hover {
-      background: #3a4450;
-    }
-    li span.name {
-      cursor: pointer;
-      flex: 1;
-    }
+    li:hover { background: #3a4450; }
+    li span.name { cursor: pointer; flex: 1; }
     .remove-btn {
       background: transparent;
       border: none;
@@ -84,9 +86,7 @@
       margin-left: 10px;
       transition: 0.2s;
     }
-    .remove-btn:hover {
-      color: #ff4d4d;
-    }
+    .remove-btn:hover { color: #ff4d4d; }
     .ranking-item {
       display: flex;
       justify-content: space-between;
@@ -97,9 +97,7 @@
     .first { color: var(--gold); font-weight: 700; }
     .second { color: var(--silver); font-weight: 700; }
     .third { color: var(--bronze); font-weight: 700; }
-    #actions {
-      text-align: center;
-    }
+    #actions { text-align: center; }
     button {
       padding: 10px 18px;
       border: none;
@@ -147,9 +145,7 @@
       justify-content: space-between;
       align-items: center;
     }
-    .rule .label {
-      font-weight: 600;
-    }
+    .rule .label { font-weight: 600; }
     .rule .value {
       font-weight: 800;
       padding: 6px 10px;
@@ -164,31 +160,41 @@
       opacity: .75;
       text-align: center;
     }
+    @media(max-width: 900px){
+      .columns {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
   <div id="container">
     <h1>Placar da Equipe</h1>
-    <div class="card">
-      <h2>Membros</h2>
-      <ul id="user-list"></ul>
-      <button class="success" onclick="addParticipant()">Adicionar Participante</button>
-    </div>
-    <div class="card">
-      <h2>Ranking</h2>
-      <ol id="ranking"></ol>
-      <div id="podium"></div>
-    </div>
-    <div class="card">
-      <h2>Ações & Valores</h2>
-      <div class="rules-grid">
-       <div class="rule"><span class="label">1. Bom dia/tarde ao chegar (cada salão)</span><span class="value">+1</span></div>
+    <div class="columns">
+      <!-- Coluna 1 -->
+      <div class="card">
+        <h2>Ações & Valores</h2>
+        <div class="rules-grid">
+        <div class="rule"><span class="label">1. Bom dia/tarde ao chegar (cada salão)</span><span class="value">+1</span></div>
         <div class="rule"><span class="label">2. Bom dia/tarde ao retornar (cada salão)</span><span class="value">+1</span></div>
         <div class="rule"><span class="label">3. Tchau ao ir embora (cada salão)</span><span class="value">+1</span></div>
         <div class="rule"><span class="label">4. Bom dia/tarde na cozinha</span><span class="value">+3</span></div>
         <div class="rule"><span class="label">5. Bom dia/tarde ao passar no Comercial</span><span class="value">+5</span></div>
+        </div>
+        <p class="note">Clique no nome do participante para adicionar pontos acumulativos.</p>
       </div>
-      <p class="note">Clique no nome do participante para adicionar pontos acumulativos.</p>
+      <!-- Coluna 2 -->
+      <div class="card">
+        <h2>Ranking</h2>
+        <ol id="ranking"></ol>
+        <div id="podium"></div>
+      </div>
+      <!-- Coluna 3 -->
+      <div class="card">
+        <h2>Membros</h2>
+        <ul id="user-list"></ul>
+        <button class="success" onclick="addParticipant()">Adicionar Participante</button>
+      </div>
     </div>
     <div id="actions">
       <button class="danger" onclick="clearData()">Limpar Dados</button>
