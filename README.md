@@ -5,12 +5,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #121212;
-      --card: #1e1e1e;
-      --text: #f0f0f0;
+      --bg: #101418;
+      --card: #1c2127;
+      --text: #e6e6e6;
       --gold: #FFD700;
       --silver: #C0C0C0;
       --bronze: #CD7F32;
+      --accent: #2d89ef;
     }
     body {
       font-family: 'Montserrat', sans-serif;
@@ -25,11 +26,11 @@
     }
     #container {
       background: var(--card);
-      padding: 25px;
-      border-radius: 14px;
+      padding: 30px;
+      border-radius: 16px;
       width: 100%;
-      max-width: 950px;
-      box-shadow: 0 10px 25px rgba(0,0,0,.5);
+      max-width: 1200px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.6);
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-areas:
@@ -37,41 +38,48 @@
         "users ranking"
         "rules rules"
         "actions actions";
-      gap: 20px;
+      gap: 24px;
     }
     h1 {
       grid-area: header;
       text-align: center;
       margin: 0 0 20px;
-      font-size: 2.2rem;
-      color: var(--gold);
+      font-size: 2.4rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    h2 {
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+      padding-bottom: 5px;
     }
     .card {
-      background: #222;
-      padding: 15px;
-      border-radius: 10px;
+      background: #232a32;
+      padding: 20px;
+      border-radius: 12px;
     }
-    ul {
+    ul, ol {
       list-style: none;
       padding: 0;
       margin: 0;
     }
     li {
-      background: #2c2c2c;
+      background: #2e363f;
       padding: 12px;
-      margin: 6px 0;
+      margin: 8px 0;
       border-radius: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       transition: 0.2s;
     }
+    li:hover {
+      background: #3a4450;
+    }
     li span.name {
       cursor: pointer;
       flex: 1;
-    }
-    li:hover {
-      background: #444;
     }
     .remove-btn {
       background: transparent;
@@ -80,6 +88,7 @@
       font-size: 1rem;
       cursor: pointer;
       margin-left: 10px;
+      transition: 0.2s;
     }
     .remove-btn:hover {
       color: #ff4d4d;
@@ -88,7 +97,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px;
+      padding: 6px 10px;
       border-radius: 6px;
     }
     .first { color: var(--gold); font-weight: 700; }
@@ -105,28 +114,32 @@
       font-weight: 600;
       cursor: pointer;
       margin: 5px;
+      font-size: 0.95rem;
+      transition: 0.3s;
     }
     .danger { background: crimson; color: #fff; }
-    .success { background: seagreen; color: #fff; }
+    .success { background: var(--accent); color: #fff; }
+    button:hover { opacity: 0.85; }
     /* Pódio */
     #podium {
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      gap: 15px;
-      margin-top: 15px;
+      gap: 20px;
+      margin-top: 20px;
     }
     .podium-place {
       flex: 1;
       text-align: center;
       border-radius: 10px 10px 0 0;
-      padding: 10px;
+      padding: 12px;
       font-weight: bold;
+      color: #000;
     }
-    .first-place { background: var(--gold); height: 120px; }
-    .second-place { background: var(--silver); height: 90px; }
-    .third-place { background: var(--bronze); height: 70px; }
-    /* Regras / Ações */
+    .first-place { background: var(--gold); height: 130px; }
+    .second-place { background: var(--silver); height: 100px; }
+    .third-place { background: var(--bronze); height: 80px; }
+    /* Regras */
     #rules {
       grid-area: rules;
     }
@@ -137,7 +150,7 @@
     }
     .rule {
       border: 1px solid #333;
-      background: #232323;
+      background: #2b323b;
       border-radius: 10px;
       padding: 10px 14px;
       display: flex;
@@ -161,6 +174,17 @@
       opacity: .75;
       text-align: center;
     }
+    @media(max-width: 900px){
+      #container {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "header"
+          "users"
+          "ranking"
+          "rules"
+          "actions";
+      }
+    }
   </style>
 </head>
 <body>
@@ -177,17 +201,15 @@
       <div id="podium"></div>
     </div>
     <div class="card" id="rules">
-      <h2>Ações & Valores (Demonstrativo)</h2>
+      <h2>Ações & Valores</h2>
       <div class="rules-grid">
-        <div class="rule"><span class="label">1. Bom dia ao chegar (cada salão)</span><span class="value">+1</span></div>
-        <div class="rule"><span class="label">2. Boa tarde ao retornar (cada salão)</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">1. Bom dia/tarde ao chegar (cada salão)</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">2. Bom dia/tarde ao retornar (cada salão)</span><span class="value">+1</span></div>
         <div class="rule"><span class="label">3. Tchau ao ir embora (cada salão)</span><span class="value">+1</span></div>
-        <div class="rule"><span class="label">4. Saudação no caminho</span><span class="value">+1</span></div>
-        <div class="rule"><span class="label">5. Ao desejar passar (pedindo licença)</span><span class="value">+1</span></div>
-        <div class="rule"><span class="label">6. Bom trabalho</span><span class="value">+1</span></div>
-        <div class="rule"><span class="label">7. Boa noite ao sair (após expediente)</span><span class="value">+1</span></div>
+        <div class="rule"><span class="label">4. Bom dia/tarde na cozinha</span><span class="value">+3</span></div>
+        <div class="rule"><span class="label">5. Bom dia/tarde ao passar no Comercial</span><span class="value">+5</span></div>
       </div>
-      <p class="note">Esta lista é apenas informativa. A pontuação é inserida manualmente ao clicar no participante.</p>
+      <p class="note">Clique no nome do participante para adicionar pontos.</p>
     </div>
     <div id="actions">
       <button class="danger" onclick="clearData()">Limpar Dados</button>
@@ -235,9 +257,9 @@
       if(sorted[2]) podium.innerHTML += `<div class="podium-place third-place">${sorted[2]}<br>${scores[sorted[2]]} pts</div>`;
     }
     function editScore(user){
-      const newScore = prompt(`Digite a nova pontuação para ${user}:`, scores[user]);
-      if(newScore!==null && !isNaN(newScore)){
-        scores[user] = parseInt(newScore);
+      const addPoints = prompt(`Quantos pontos deseja adicionar a ${user}? (atual: ${scores[user]} pts)`, "0");
+      if(addPoints!==null && !isNaN(addPoints)){
+        scores[user] += parseInt(addPoints);
         save();
         renderUsers();
         renderRanking();
@@ -264,7 +286,7 @@
     }
     function clearData(){
       const pass = prompt("Digite a senha do administrador para limpar:");
-      if(pass==="admin123"){ // senha simples para demo
+      if(pass==="admin123"){ 
         users.forEach(u=>scores[u]=0);
         save();
         renderUsers();
