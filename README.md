@@ -20,30 +20,24 @@
       color: var(--text);
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       min-height: 100vh;
-      padding: 20px;
+      padding: 30px 20px;
     }
     #container {
       background: var(--card);
       padding: 30px;
       border-radius: 16px;
       width: 100%;
-      max-width: 1200px;
+      max-width: 800px;
       box-shadow: 0 10px 25px rgba(0,0,0,.6);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-areas:
-        "header header"
-        "users ranking"
-        "rules rules"
-        "actions actions";
+      display: flex;
+      flex-direction: column;
       gap: 24px;
     }
     h1 {
-      grid-area: header;
       text-align: center;
-      margin: 0 0 20px;
+      margin: 0 0 10px;
       font-size: 2.4rem;
       color: var(--accent);
       font-weight: 700;
@@ -104,7 +98,6 @@
     .second { color: var(--silver); font-weight: 700; }
     .third { color: var(--bronze); font-weight: 700; }
     #actions {
-      grid-area: actions;
       text-align: center;
     }
     button {
@@ -140,9 +133,6 @@
     .second-place { background: var(--silver); height: 100px; }
     .third-place { background: var(--bronze); height: 80px; }
     /* Regras */
-    #rules {
-      grid-area: rules;
-    }
     .rules-grid {
       display: flex;
       flex-direction: column;
@@ -174,42 +164,31 @@
       opacity: .75;
       text-align: center;
     }
-    @media(max-width: 900px){
-      #container {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-          "header"
-          "users"
-          "ranking"
-          "rules"
-          "actions";
-      }
-    }
   </style>
 </head>
 <body>
   <div id="container">
     <h1>Placar da Equipe</h1>
-    <div class="card" style="grid-area:users;">
+    <div class="card">
       <h2>Membros</h2>
       <ul id="user-list"></ul>
       <button class="success" onclick="addParticipant()">Adicionar Participante</button>
     </div>
-    <div class="card" style="grid-area:ranking;">
+    <div class="card">
       <h2>Ranking</h2>
       <ol id="ranking"></ol>
       <div id="podium"></div>
     </div>
-    <div class="card" id="rules">
+    <div class="card">
       <h2>Ações & Valores</h2>
       <div class="rules-grid">
-        <div class="rule"><span class="label">1. Bom dia/tarde ao chegar (cada salão)</span><span class="value">+1</span></div>
+       <div class="rule"><span class="label">1. Bom dia/tarde ao chegar (cada salão)</span><span class="value">+1</span></div>
         <div class="rule"><span class="label">2. Bom dia/tarde ao retornar (cada salão)</span><span class="value">+1</span></div>
         <div class="rule"><span class="label">3. Tchau ao ir embora (cada salão)</span><span class="value">+1</span></div>
         <div class="rule"><span class="label">4. Bom dia/tarde na cozinha</span><span class="value">+3</span></div>
         <div class="rule"><span class="label">5. Bom dia/tarde ao passar no Comercial</span><span class="value">+5</span></div>
       </div>
-      <p class="note">Clique no nome do participante para adicionar pontos.</p>
+      <p class="note">Clique no nome do participante para adicionar pontos acumulativos.</p>
     </div>
     <div id="actions">
       <button class="danger" onclick="clearData()">Limpar Dados</button>
