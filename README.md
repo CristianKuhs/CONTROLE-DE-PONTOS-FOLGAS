@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -67,8 +68,8 @@
       font-size: 0.95rem;
     }
     li span.name {
-      cursor: pointer;
       flex: 1;
+      cursor: pointer;
     }
     .ranking-item {
       display: flex;
@@ -101,6 +102,16 @@
     .danger { background: crimson; color: #fff; }
     .success { background: #2d89ef; color: #fff; }
     button:hover { opacity: 0.85; }
+    /* INPUTS */
+    input[type="number"] {
+      width: 70px;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background: #2a3038;
+      color: #fff;
+      margin-left: 10px;
+    }
     /* RESPONSIVIDADE */
     @media(max-width: 1000px){
       .columns {
@@ -116,12 +127,12 @@
       <!-- COLUNA 1: AÇÕES & VALORES -->
       <div class="card">
         <h2>Ações & Valores</h2>
-        <ul id="actionsList">
-          <li><span class="name">1. Bom dia/tarde ao chegar (cada salão)</span> <button onclick="addPointsToAll(1)">+1</button></li>
-          <li><span class="name">2. Bom dia/tarde ao retornar (cada salão)</span> <button onclick="addPointsToAll(1)">+1</button></li>
-          <li><span class="name">3. Tchau ao ir embora (cada salão)</span> <button onclick="addPointsToAll(1)">+1</button></li>
-          <li><span class="name">4. Bom dia/tarde na cozinha</span> <button onclick="addPointsToAll(3)">+3</button></li>
-          <li><span class="name">5. Bom dia/tarde ao passar no Comercial</span> <button onclick="addPointsToAll(5)">+5</button></li>
+        <ul>
+          <li>1. Bom dia/tarde ao chegar (cada salão) → +1</li>
+          <li>2. Bom dia/tarde ao retornar (cada salão) → +1</li>
+          <li>3. Tchau ao ir embora (cada salão) → +1</li>
+          <li>4. Bom dia/tarde na cozinha → +3</li>
+          <li>5. Bom dia/tarde ao passar no Comercial → +5</li>
         </ul>
       </div>
       <!-- COLUNA 2: RANKING -->
@@ -145,20 +156,26 @@
       {name: "Cristian", points: 0},
       {name: "Eduardo", points: 0},
       {name: "Emanuela", points: 0},
+      {name: "Kauane", points: 0},
+      {name: "Lipe", points: 0},
       {name: "Pamela", points: 0},
       {name: "Patrick", points: 0},
       {name: "Pedro Henrique", points: 0},
       {name: "Pedro Leite", points: 0},
       {name: "Richard", points: 0},
       {name: "Thais", points: 0}
+      {name: "Vitória", points: 0},
     ];
     function renderPlayers(){
       const playersList = document.getElementById("playersList");
       playersList.innerHTML = "";
       players.forEach((p,i) => {
         const li = document.createElement("li");
-        li.innerHTML = `<span class="name" onclick="addPoints(${i},1)">${p.name} (${p.points} pts)</span>
-                        <button class="remove-btn" onclick="removePlayer(${i})">✖</button>`;
+        li.innerHTML = `
+          <span class="name">${p.name} (${p.points} pts)</span>
+          <input type="number" id="input-${i}" placeholder="+0">
+          <button onclick="addPoints(${i})">OK</button>
+          <button class="remove-btn" onclick="removePlayer(${i})">✖</button>`;
         playersList.appendChild(li);
       });
       renderRanking();
@@ -177,13 +194,14 @@
         rankingList.appendChild(li);
       });
     }
-    function addPoints(i, pts){
-      players[i].points += pts;
-      renderPlayers();
-    }
-    function addPointsToAll(pts){
-      players.forEach(p => p.points += pts);
-      renderPlayers();
+    function addPoints(i){
+      const input = document.getElementById(`input-${i}`);
+      const value = parseInt(input.value);
+      if(!isNaN(value)){
+        players[i].points += value;
+        input.value = "";
+        renderPlayers();
+      }
     }
     function addPlayer(){
       const name = prompt("Digite o nome do novo membro:");
